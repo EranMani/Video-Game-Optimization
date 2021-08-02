@@ -159,3 +159,58 @@
 	- When project is cross-platforms (targeting numerous operating systems) you need to have all of these devices available to run benchmarks on them for
 	  low-end and high-end versions. When declaring the minimum and maximum system requirements of the game, you should have the machines with these specs
 	  to test in order to promise the users that the game can actually run on a minimum spec hardware
+	  
+* Unity profiler
+	- The profiler will reveal all of the components and their frame allocation amount
+	- Project Build: When optimizing, you don't want to optimize the game from the editor scene. The editor itself adds overhead to your performance, 
+	  so you are not actually getting a true representation of the thing running. Instead, you can make a build of the project and then link up the 
+	  profiler to that in order to actually run it on the machine (hardware) that you want to test it on.
+	  In order to hook the profiler to the build, you go to the build settings and check:
+		* Development Build
+		* Autoconnect Profiler
+		* Deep Profiling Support
+	  Keep the Unity scene open and open the build game. In the profiler, you can switch between the connected devices. When the build game runs,
+	  the profiler will be active and will show the results.
+	  NOTE: Make sure that the devices are on the same WIFI network in order for you to be able to find them
+	- In the profiler you can filter between the components of each subsystem in order to micro-test each component
+	- Below there is a timeline which shows the components and from there we can actually target down what is taking up a lot of time to process
+	- In the timeline you can see how much miliseconds it took to allocate all the components in the specific frame
+	- We can switch the timeline into hierarchy mode. A list will show up which will show you what is taking up time in a frame based on particular
+	  profile markers:
+		* EditorLoop -> Will be shown only when you are running the profiler with the editor. The editor itself has to run because its actually
+						an application which is taking up resources that might be affecting your performance. Take that into consideration that your game
+						is not actually going to incur any of this editor loop stuff. If you want to get rid of it, you can run the profiler standalone
+						menu which can be outside of the editor
+		* PlayerLoop -> Important one. This is where the script is getting called from. 
+							COLUMNS
+								- Total: The total amount of time Unity spent on a particular function, as a percentage
+								- Self: The total amount of time Unity spent on a particular function as a percentage, excluding the time Unity spends calling sub-functions
+								- calls: Indicating how many times in a frame the shown methods are called.
+								- GC Alloc: How much scripting heap memory Unity has allocated in the current frame. The scripting heap memory is
+											managed by the garbage collector
+								- Time ms: The total amount of time Unity spent on a particular function, in milliseconds
+								- Self ms: The total amount of time Unity spent on a particular function, in milliseconds, excluding the time Unity
+								           spends calling sub-functions
+								- Warning: Displays how many times the application has triggered a warning during the current frame
+								
+							METHODS
+								- Gfx methods in list: Indicating the wait time between the CPU and GPU
+								- Update.ScriptRunBehaviourUpdate: Relate to the Update methods inside the scripts that are called in the frame. Open the
+																   stack to see all of the Update methods that are being called
+																   Inside the parent, there is a group called -BehaviourUpdate- which shows all the scripts
+																   that are running the Update method
+																   NOTE: Once you have got a full game with a whole bunch of different objects, if they
+																		 all got their Update methods on them and they are not using them, they are still
+																		 being called. So, its a good practice to get rid of them altogether
+																   
+							HOW TO USE
+								- When going through the list, mark the methods that have a value above 0% which may impact performance and check there
+								- Dig around the hierarchy within these methods to reveal the amount of calls that are going on inside
+	- Threads: Unless using the job system, pretty much all of your code is going to be on the main thread. We can see a list of all the different threads 
+	           that you can have, and Unity have ones that its going to use for some parallel processing within the engine. The job worker threads referring
+			   to the job system if you were going to implement that
+	- Profile marker for the GPU can be found in the list of threads under the name RENDER THREAD. Just like the CPU in the main thread, the Render Threads
+	  also have its relevant markers. In the Render Thread, the GPU usage is hidden under
+		** Gfx.WaitForGfxCommandsFromMainThread/Semaphore.WaitForSignal -> that means that the CPU is having a little bit of snooze, because its waiting
+																		   for the GPU to finish. So basically, that signals when the drawing is happening,
+																		   the CPU is not doing anything at all
