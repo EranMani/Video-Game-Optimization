@@ -175,3 +175,34 @@
 	- In the profiler you can filter between the components of each subsystem in order to micro-test each component
 	- Below there is a timeline which shows the components and from there we can actually target down what is taking up a lot of time to process
 	- In the timeline you can see how much miliseconds it took to allocate all the components in the specific frame
+	- We can switch the timeline into hierarchy mode. A list will show up which will show you what is taking up time in a frame based on particular
+	  profile markers:
+		* EditorLoop -> Will be shown only when you are running the profiler with the editor. The editor itself has to run because its actually
+						an application which is taking up resources that might be affecting your performance. Take that into consideration that your game
+						is not actually going to incur any of this editor loop stuff. If you want to get rid of it, you can run the profiler standalone
+						menu which can be outside of the editor
+		* PlayerLoop -> Important one. This is where the script is getting called from. 
+							COLUMNS
+								- Total: The total amount of time Unity spent on a particular function, as a percentage
+								- Self: The total amount of time Unity spent on a particular function as a percentage, excluding the time Unity spends calling sub-functions
+								- calls: Indicating how many times in a frame the shown methods are called.
+								- GC Alloc: How much scripting heap memory Unity has allocated in the current frame. The scripting heap memory is
+											managed by the garbage collector
+								- Time ms: The total amount of time Unity spent on a particular function, in milliseconds
+								- Self ms: The total amount of time Unity spent on a particular function, in milliseconds, excluding the time Unity
+								           spends calling sub-functions
+								- Warning: Displays how many times the application has triggered a warning during the current frame
+								
+							METHODS
+								- Gfx methods in list: Indicating the wait time between the CPU and GPU
+								- Update.ScriptRunBehaviourUpdate: Relate to the Update methods inside the scripts that are called in the frame. Open the
+																   stack to see all of the Update methods that are being called
+																   Inside the parent, there is a group called -BehaviourUpdate- which shows all the scripts
+																   that are running the Update method
+																   NOTE: Once you have got a full game with a whole bunch of different objects, if they
+																		 all got their Update methods on them and they are not using them, they are still
+																		 being called. So, its a good practice to get rid of them altogether
+																   
+							HOW TO USE
+								- When going through the list, mark the methods that have a value above 0% which may impact performance and check there
+								- Dig around the hierarchy within these methods to reveal the amount of calls that are going on inside
