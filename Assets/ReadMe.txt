@@ -159,3 +159,19 @@
 	- When project is cross-platforms (targeting numerous operating systems) you need to have all of these devices available to run benchmarks on them for
 	  low-end and high-end versions. When declaring the minimum and maximum system requirements of the game, you should have the machines with these specs
 	  to test in order to promise the users that the game can actually run on a minimum spec hardware
+	  
+* Unity profiler
+	- The profiler will reveal all of the components and their frame allocation amount
+	- Project Build: When optimizing, you don't want to optimize the game from the editor scene. The editor itself adds overhead to your performance, 
+	  so you are not actually getting a true representation of the thing running. Instead, you can make a build of the project and then link up the 
+	  profiler to that in order to actually run it on the machine (hardware) that you want to test it on.
+	  In order to hook the profiler to the build, you go to the build settings and check:
+		* Development Build
+		* Autoconnect Profiler
+		* Deep Profiling Support
+	  Keep the Unity scene open and open the build game. In the profiler, you can switch between the connected devices. When the build game runs,
+	  the profiler will be active and will show the results.
+	  NOTE: Make sure that the devices are on the same WIFI network in order for you to be able to find them
+	- In the profiler you can filter between the components of each subsystem in order to micro-test each component
+	- Below there is a timeline which shows the components and from there we can actually target down what is taking up a lot of time to process
+	- In the timeline you can see how much miliseconds it took to allocate all the components in the specific frame
