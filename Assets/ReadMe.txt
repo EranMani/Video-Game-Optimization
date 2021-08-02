@@ -206,3 +206,11 @@
 							HOW TO USE
 								- When going through the list, mark the methods that have a value above 0% which may impact performance and check there
 								- Dig around the hierarchy within these methods to reveal the amount of calls that are going on inside
+	- Threads: Unless using the job system, pretty much all of your code is going to be on the main thread. We can see a list of all the different threads 
+	           that you can have, and Unity have ones that its going to use for some parallel processing within the engine. The job worker threads referring
+			   to the job system if you were going to implement that
+	- Profile marker for the GPU can be found in the list of threads under the name RENDER THREAD. Just like the CPU in the main thread, the Render Threads
+	  also have its relevant markers. In the Render Thread, the GPU usage is hidden under
+		** Gfx.WaitForGfxCommandsFromMainThread/Semaphore.WaitForSignal -> that means that the CPU is having a little bit of snooze, because its waiting
+																		   for the GPU to finish. So basically, that signals when the drawing is happening,
+																		   the CPU is not doing anything at all
