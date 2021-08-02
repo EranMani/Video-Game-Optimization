@@ -130,3 +130,32 @@
 											  you get two frames of exactly the same thing rendered. So in one second, you end up with half as many
 											  new images, and that essientally drops your frame rate in half.
 									   The longer it takes to process a frame, the less frames you can fit into a second
+									   
+* Performance Budget
+	- The performance budget is what you are going to use to determine how well your game is running, and exactly where you need to focus your 
+	  attentions with respect to optimization. Just knowing if you have got performance issues with the CPU and GPU is not enough to perform the 
+	  optimization cycle. When you have budget determined, you can now focus efforts on the essential subsystems and easily see where you are 
+	  going to have to make changes to your allocations
+	- With the informatio above, we can determine how to carve up a frame and allocate enough of it for each of the subsystems. With these in mind,
+	  we can determine a performance budget (An example budget table will be shown as an image in the Assets folder)
+	- Subsystems are:
+		1) Rendering
+		2) Physics
+		3) Sound
+		4) Gameplay
+		5) Miscellaneous
+	- The budget table will list each of the subsystems and the time per frame that you want to allocate to each, given how many FPS you want 
+	  your game to run at. 
+	- Memory items should also be included in the budget table. This will determine the amount of memory needed in case the algorithm is modified to
+	  run faster but use up more memory. You need to make sure that you actually have enough memory to run that (Memorisation)
+	- Hardware: Time allocations for the CPU and GPU will depend on the frame rate you are targeting. This will depend on the type of hardware you need
+				to run the game. The amount of memory is also based on hardware.
+				Mobile devices for example will have a slower frame rate to that of the console, and it will also have less memory. Also, on mobile
+				devices the V-Sync is actually locked to be turned on all of the time.
+	- Because of different hardwares, when creating a performance budget, you have to put together two budgets:
+		1) For high-end machines (with the maximum system requirements for the game)
+		2) For low-end machines (with the minimum system requirements for the game)
+	- In case the project will be cross-platforms, it will force to create a budget for each one of those  platforms with high and low end specifications
+	- When project is cross-platforms (targeting numerous operating systems) you need to have all of these devices available to run benchmarks on them for
+	  low-end and high-end versions. When declaring the minimum and maximum system requirements of the game, you should have the machines with these specs
+	  to test in order to promise the users that the game can actually run on a minimum spec hardware
