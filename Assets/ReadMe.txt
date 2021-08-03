@@ -214,3 +214,27 @@
 		** Gfx.WaitForGfxCommandsFromMainThread/Semaphore.WaitForSignal -> that means that the CPU is having a little bit of snooze, because its waiting
 																		   for the GPU to finish. So basically, that signals when the drawing is happening,
 																		   the CPU is not doing anything at all
+																		   
+***************************************************************************************************************************
+-------------------------------------------------------------------------------------------------------------------
+----------------------------------------------Subsystems Optimization----------------------------------------------
+-------------------------------------------------------------------------------------------------------------------
+
+------------------------------------------------ Optimizing Script ------------------------------------------------
+* Get Component
+	- Often you will want to get a component when your script needs to access on of the components you have added to something
+	- There are 3 ways to call get component:
+		1) GetComponent<T>() -> GetComponent<Transform>()
+		2) GetComponent(string) -> (Transform) GetComponent("Transform")
+		3) GetComponent(typeof(T)) -> (Transform) GetComponent(typeof(Transform))
+		
+		With Unity version of 2020.1.2f1, the second GetComponent call is the fastest to complete
+		When using different Unity versions, we can run all three of these GetComponent calls and check each Time ms it takes to complete the calls
+		and use the faster one for the project.
+		Now, why is this call (Transform) GetComponent("Transform") is the fastest? if we open the stack in the profiler (click the down arrow),
+		we can see the process it takes for Unity when calling that methods. When Unity calls (Transform) GetComponent("Transform"), it does it
+		with less processes then the other two.
+		
+		Other comparable calls might be -
+			Find object by tag or name -> GameObject.FindGameObjectWithTag() VS GameObject.Find()
+			Using gameObject itself is redundant and implies an extra access. Instead can use 'this'
