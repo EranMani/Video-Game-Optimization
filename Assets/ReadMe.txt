@@ -238,3 +238,17 @@
 		Other comparable calls might be -
 			Find object by tag or name -> GameObject.FindGameObjectWithTag() VS GameObject.Find()
 			Using gameObject itself is redundant and implies an extra access. Instead can use 'this'
+			
+* Caching VS Dynamic Finds
+	- Caching: getting a hold of any of your game objects or other assets that you want to use in your game. Instead of getting a hold on them
+			   dynamically every frame, we can store them in memory so that we can access them at all times. The variable that will hold the object
+			   will be global and will run only once, in the Start() method. 
+			   Another example is to initialize the variable with the amount of objects it needs from the start, and then set or get information
+			   on them, instead of using GameObject.Find(), which is expensive
+			   
+	- Finding objects or components are happening many times within a game environment. The idea is to strive and do these tasks as little as possible
+	- These tasks shouldn't be running insdie the playerLoop, which means the Update method, maybe Fixed Update or Late Update. Therefore, you have
+	  to use them very sparingly
+	- A GameObject.FindObjectsOfType<Transform>() is a generic way of finding objects with the same type as the T. It will go through all the 
+	  objects in the hierarchy and check if they have the same type or component attached. This takes alot of resources and shouldn't run in the 
+	  Update method. It is not something you should do in your game environment as such
