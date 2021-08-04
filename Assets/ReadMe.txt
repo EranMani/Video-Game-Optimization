@@ -252,3 +252,16 @@
 	- A GameObject.FindObjectsOfType<Transform>() is a generic way of finding objects with the same type as the T. It will go through all the 
 	  objects in the hierarchy and check if they have the same type or component attached. This takes alot of resources and shouldn't run in the 
 	  Update method. It is not something you should do in your game environment as such
+	  
+	- Populate object in inspector VS find object dynamically in code: Exposing the object in the inspector is very efficient because you are not 
+																	   trying to populate them dynamically, which might look clever, but when it comes 
+																	   down to performance, its a really bad idea
+																	   
+	- NOTE: when working with a component, we should to hold that component directly instead for instance to create a game object and then
+	        call its transform. For example, we want to move tank objects with Translate direction:
+				public GameObject[] tanks; -> Instead of calling the game object itself and call its transform 
+				public Transform[] tanks; -> Cache the transform of the object directly and then access it whenever needed
+			Same goes for other components. If you want to change the material color of 100 tank objects then you should not cache the game object itself,
+			rather cache the material component directly and access it at all times
+			So, caching should happen once, in the Start() method. Then in the Update() method we can use the variable that is caching the information,
+			and do something with it.
