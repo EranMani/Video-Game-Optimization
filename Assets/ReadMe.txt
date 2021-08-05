@@ -284,3 +284,53 @@
 			for them to move smoothly. You can try and apply rigidbody and add force instead, but adding physics to many object running at the same
 			time in the scene will eat up the performance
 			 
+* Garbage Collection
+	- When running any method in the Update() is placed on the stack above it.
+	  First, you run Update, then it goes and sits in the stack and from there you run another method. This method will sit in the stack on top of
+	  the Update()
+	  Once the method is finished running, it's removed from the stack
+	  Another method that will run wil be placed on the stack above the Update()
+	  As you go deeper into methods inside methods, they will be placed on each other in the stack.
+	  At some point the stack will overflow, if you got too many methods that have run too deep
+	  
+	  Now, what is happening when you run a method? The heap comes into play
+	  Lets say the method runs a for loop to create amount of game objects. 
+	  for(int i = 0; i < 100; i++){
+			GameObject tank = new GameObject();
+	  }
+	  
+	  The 'i' variable is stored in the heap and changed as the for loop goes around
+	  Each time you create a new game object, it goes to the heap. All those 100 tanks are sitting in the heap memory.
+	  Now, even when the method is done and removed from stack, any memory that was allocated in the heap is still sitting there. The local 'i' variable
+	  is able to be removed, but its still sits there until the process of the garbage collection comes along and cleans it up
+	  
+	  Things only get marked to be deleted or picked up by the garbage collection if they are no longer used. In Unity, when it instantiated a new
+	  game object, you know that that game object now exists in the hierarchy and there are other process that are accessing it, so it is not
+	  going to get picked up by the garbage collection
+	  When running the Destroy() method on an object, the object still stays in the heap. It just marks the object to be removed. And again, your code
+	  has to wait for the garbage collector to come around, pick them up and take them away.
+	  
+	  Basically, you got very little control over when garbage collection occurs because that is the nature of C#
+	  
+	- In the Unity profiler, the garbage collector is mark with green color. The allocations for the garbage collector in the beginning is related to 
+	  you and what you are doing in your code, for example create new object instances such as gameObjects, materials and more.
+	  Creating new game objects while in Update() can overwhelm the system.
+	  Most of the time, you dont have much control over the garbage collector actions because it may be related to Unity doing its own stuff
+	  In the search bar, you can type gc.alloc to find all related calls to the garbage collection in the frame\
+	  
+	- Garbage is being created whenever you create new instance of something, like lists, gameObjects etc. So to avoid it, make sure you don't have 
+	  alot of new things being created in memory inside anything that is going to loop a lot or anywhere inside of your Update(). Do those sorts of things
+	  in the Awake() and Start()
+	
+	- GC.Alloc relates to the scripting side, while GC.Collect relates to the garbage collection side
+	
+	- C# types such as lists and strings are native to the language and therefore can be gotten rid of. However, any classes that belong to Unity
+	  that are still going tobe used within Unity, they are going to go into the heap and then they are going to stay there, especially game objects,
+	  because they become sort of instantiated as in a real thing inside of your game world and therefore you need to remove them but do that when you
+	  don't need them
+	  
+	- Garbage collection is not forced to come any earlier just by calling the Destroy(). It will only mark the objects to be collected, and in the next
+	  garbage collection phase they will be removed from the heap
+	  
+	- Destroy() will set your object to null or being empty at the end of the frames
+	- DestroyImmediate() will set the game object to null at that point in the code
