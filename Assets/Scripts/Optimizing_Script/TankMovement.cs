@@ -10,12 +10,19 @@ public class TankMovement : MonoBehaviour
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
         t = (Transform) GetComponent("Transform");
+
+        InvokeRepeating("FollowPlayer", Random.Range(0f, 1f), 1);
+    }
+
+    void FollowPlayer()
+    {
+        t.LookAt(player.transform.position);
+        t.Translate(0, 0, 0.05f);
     }
 
     // Update is called once per frame
     void Update()
     {
-        t.LookAt(player.transform.position);
-        t.Translate(0, 0, 0.05f);
+        
     }
 }
