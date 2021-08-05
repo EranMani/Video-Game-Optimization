@@ -31,9 +31,9 @@ public class TankAI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        foreach (Transform t in tanks)
+        /*foreach (Transform t in tanks)
         {          
             t.Translate(0, 0, 0.05f);          
-        } 
+        } */
     }
 }

@@ -269,4 +269,18 @@
 	- NOTE: In case of trying for example to move an object using Translate and you have 100 of them, if you run the code individually on each object
 			or run it in one place where we have a loop that runs for all the 100 objects, the amount of Time ms in the profiler is almost the same. 
 			You should always try and experiment to see how each code designs affect the performance and choose the one that works the best.
+			
+* Spread Loading Time
+	- In case of running 100 objects which process movement every frame, we can try and spread their movement 
+		Example: InvokeRepeating("FollowPlayer", Random.Range(0f, 1f), 1) -> Run the method every second for a period of time. You can see in the 
+				 profiler that spikes are not evenly spaced, but spread acrossed the frame and that can help increase the FPS a bit.
+	  If you see in the profiler that the spikes that you have are evenly spaced, then you should try to find a way to spread them and let the application
+	  breath more from frame to frame. With the Invoke, we can invoke the method for each object in the scene at a different time.
+	  
+	- Coroutine: It is almost the same like using the invoke repeating method. You can choose the invoke-repeating or the coroutine, you will get
+				 the same performance result more or less
+				
+	- NOTE: There are time when you dont have choice but to put code in the Update method, for example moving objects should happen every frame
+			for them to move smoothly. You can try and apply rigidbody and add force instead, but adding physics to many object running at the same
+			time in the scene will eat up the performance
 			 
