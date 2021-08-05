@@ -265,3 +265,8 @@
 			rather cache the material component directly and access it at all times
 			So, caching should happen once, in the Start() method. Then in the Update() method we can use the variable that is caching the information,
 			and do something with it.
+			
+	- NOTE: In case of trying for example to move an object using Translate and you have 100 of them, if you run the code individually on each object
+			or run it in one place where we have a loop that runs for all the 100 objects, the amount of Time ms in the profiler is almost the same. 
+			You should always try and experiment to see how each code designs affect the performance and choose the one that works the best.
+			 
