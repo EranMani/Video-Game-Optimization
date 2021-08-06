@@ -334,3 +334,11 @@
 	  
 	- Destroy() will set your object to null or being empty at the end of the frames
 	- DestroyImmediate() will set the game object to null at that point in the code
+	
+* Null Testing
+	- There are 2 ways to test if something is null:
+		1) if (object != null) {} 
+		2) if (ReferenceEquals(object, null)) {} <-- This null checking option is way more optimized!
+		
+		When running these checks on a scene that generates thousands of objects, you can see that the second check option is taking much less 
+		resources then the first check option, which is commonly used. 
