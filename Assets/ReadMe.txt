@@ -373,6 +373,9 @@
 		
 	- Strings are easy to understand for humans, but the computer does not understand them and therefore they have to convert them from one thing
 	  to another in order to use them
+	  
+	- NOTE: if you want to check if other classes has those methods for getting a unique identifier for the property name, you can check their 
+	        static methods of that class
 		
 * Memory VS Performance
 	- We can declare variables once to be properties of a class, which do take up more memory.
@@ -380,3 +383,10 @@
 	- The negotiation will be:
 		* Whether you want to use up MORE memory or whether you want to use up more of your PERFORMANCE time
 	  
+* Tag VS CompareTag
+	- The CompareTag option is far better to use then Tag, because:
+		1) testGameObject.tag == "Player" : the profiler shows that checking for equal tag actually perform 2 calls:
+			* get_tag - get the tag itself and store it in memory, therefore using quite a bit of memory
+			* string_equality - compare between two strings
+		   Both of the calls are using large amount of memory and decrease performance
+		2) the CompareTag has only 1 call and doesn't use memory at all, therefore it gives better performance
