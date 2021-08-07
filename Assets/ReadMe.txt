@@ -362,4 +362,12 @@
 		void Start(){
 			animRunningID = Animator.StringToHash(action_string) -> converts the string into the internalized version that the animator already knows
 		}
+		
+		With the shader, we can make the call to 'PropertyToID' manualy by code. 
+		
+		int colorPropertyID;
+		void Start()
+		{
+			colorPropertyID = Shader.PropertyToID("_Color");
+		}
 	  
