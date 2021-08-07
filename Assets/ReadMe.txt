@@ -370,4 +370,13 @@
 		{
 			colorPropertyID = Shader.PropertyToID("_Color");
 		}
+		
+	- Strings are easy to understand for humans, but the computer does not understand them and therefore they have to convert them from one thing
+	  to another in order to use them
+		
+* Memory VS Performance
+	- We can declare variables once to be properties of a class, which do take up more memory.
+	- If you use a variable constantly all the time, it makes sense to actually put it into memory.
+	- The negotiation will be:
+		* Whether you want to use up MORE memory or whether you want to use up more of your PERFORMANCE time
 	  

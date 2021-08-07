@@ -8,6 +8,9 @@ public class MoveBall : MonoBehaviour
     float sides = 30.0f;
     float speedMax = 0.3f;
     int colorPropertyID;
+    // Store the variable once in the memory
+    Vector3 position;
+    Renderer rend;
 
     void Start()
     {
@@ -17,7 +20,7 @@ public class MoveBall : MonoBehaviour
                         Random.Range(0.0f, speedMax));
 
         colorPropertyID = Shader.PropertyToID("_Color");
-
+        rend = GetComponent<Renderer>();
     }
 
     Color GetRandomColor()
@@ -29,35 +32,39 @@ public class MoveBall : MonoBehaviour
     void Update()
     {
         transform.Translate(velocity);
+        
+        // Instead of calling the transform each statement below, assign it once to a variable and use it. This will save calls amount 
+        // in the profiler and will increase performance
+        position = transform.position;
 
-        if (transform.position.x > sides)
+        if (position.x > sides)
         {
             velocity.x = -velocity.x;
         }
-        if (transform.position.x < -sides)
+        if (position.x < -sides)
         {
             velocity.x = -velocity.x;
         }
-        if (transform.position.y > sides)
+        if (position.y > sides)
         {
             velocity.y = -velocity.y;
         }
-        if (transform.position.y < -sides)
+        if (position.y < -sides)
         {
             velocity.y = -velocity.y;
         }
-        if (transform.position.z > sides)
+        if (position.z > sides)
         {
             velocity.z = -velocity.z;
         }
-        if (transform.position.z < -sides)
+        if (position.z < -sides)
         {
             velocity.z = -velocity.z;
         }
 
-        this.GetComponent<Renderer>().material.SetColor(colorPropertyID, new Color(transform.position.x/sides,
-                                                                             transform.position.y/sides,
-                                                                           transform.position.z/sides));
+        rend.material.SetColor(colorPropertyID, new Color(position.x/sides,
+                                                                             position.y/sides,
+                                                                           position.z/sides));
 
     }
 }
