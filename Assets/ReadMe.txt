@@ -342,3 +342,41 @@
 		
 		When running these checks on a scene that generates thousands of objects, you can see that the second check option is taking much less 
 		resources then the first check option, which is commonly used. 
+
+* String As ID
+	- Strings is quite expensive to use a string in place of where you could use an integer, because Unity does not use strings as such
+	- If you give Unity a string, it needs to convert it into something else and then it can use it. In the profiler you can see that Unity
+	  calls a method to convert the string 
+	- If possible, try to pass on int's instead of string as ID, for example: 
+		Input.getKey("up") <-- string is bad as ID / Input.getKey(keycode.UP) <-- pass int as an ID, which is less performance consuming
+		
+	- In the Unity API there are two special cases where you can easily get an integer ID instead of using a string
+		1) Animator
+		2) Shader and materials
+		
+		With the animator, we can call a static method upon an integer variable that will convert string to hash. That operation will happen once,
+		in the Start() since it is going to exists in memory for the whole time rather then constantly creating it over and over again.
+		
+		int animRunningID;
+		
+		void Start(){
+			animRunningID = Animator.StringToHash(action_string) -> converts the string into the internalized version that the animator already knows
+		}
+		
+		With the shader, we can make the call to 'PropertyToID' manualy by code. 
+		
+		int colorPropertyID;
+		void Start()
+		{
+			colorPropertyID = Shader.PropertyToID("_Color");
+		}
+		
+	- Strings are easy to understand for humans, but the computer does not understand them and therefore they have to convert them from one thing
+	  to another in order to use them
+		
+* Memory VS Performance
+	- We can declare variables once to be properties of a class, which do take up more memory.
+	- If you use a variable constantly all the time, it makes sense to actually put it into memory.
+	- The negotiation will be:
+		* Whether you want to use up MORE memory or whether you want to use up more of your PERFORMANCE time
+	  
