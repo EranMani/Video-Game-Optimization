@@ -438,3 +438,17 @@
 		2) Array
 		3) List
 		4) Dictionary
+		
+	- When comparing efficiency results when checking if value is contained or removing an item:
+		1) Array - the most efficient to use
+		2) HashSet
+		3) Dictionary
+		4) List - the least efficient to use
+		
+* Conclusions
+	- An array is much faster across all situiations then any other container datatype
+	- Lists almost always performed worse then dictionaries, but are faster to add items. If you are not going to be adding things that often,
+	  then there is no reason why you couldnt use a dictionary. If you were going to put a whole bunch of things into some kind of container in the
+	  update or frame then you might consider looking at lists because they obviously do it much faster
+	- Iterating over a Hashset is insanely fast. If you do have an awful lot of objects that you need to go over and over again throughout your game,
+	  you might want to consider using a hash set because it obviously going to save you an awful lot of time
