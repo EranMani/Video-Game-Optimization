@@ -423,3 +423,18 @@
 			* Create an Instance property with get() and set(), to set the instance to the script or get the instance if exists or not
 			* It ensures that you've got proper memory management of values and data that are really global values and that you dont end up with
 			  multiple copies of them in memory
+			  
+-------------------------------------------------- Data Structures ------------------------------------------------
+* There are 4 data structures to use, ordered from best performance to low performance (including memory usage):
+	1) Array - since array has a constant size, you dont need to resize or to ensure capacity and etc..
+	2) List - list is dynamic, which run more calls then the array
+	3) Dictionary - cant have duplicate items in it (run compare call). It has to compare between items before adding one, and will resize accordingly
+	4) HashSet - the longest time to calculate, which takes more performance
+	
+	In case of performance, the array is much faster to calculate from the four DS above because he has CONSTANT size
+	
+	In case of iterating through them, ordered from best performance to low performance (including memory usage):
+		1) HashSet - is the fastest data structure to iterate through
+		2) Array
+		3) List
+		4) Dictionary
