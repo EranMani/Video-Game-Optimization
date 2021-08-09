@@ -403,6 +403,8 @@
 	- There is always one copy of the singleton. Each time a script does get hold of the singleton, it doesn't make another copy of the singleton
 	- It might exist for the whole time that your game is running, or may only exist now and then for certain things
 	- The singleton isn't really optimizing your game, but it's ensuring that it is optimized right from the beginning
+	- The major thing about a singleton is its constructor, or the instance of it. Whenever it is referenced, it has to make sure that only one of 
+	  them exist in your entire game world
 	- There are 2 ways to create a singleton:
 		1) Use a static class - 
 			* Statics are global
@@ -416,3 +418,8 @@
 			* If you want to keep a hold of a whole bunch of variables that relate to your whole game environment, then you could easily have a 
 			  really good static class which hass all of these things listed int so that you can access it very easily, and there will be only one
 			  copy of it
+		2) Use a static instance variable inside the class with variables -
+			* Assign the script to the Instance, which then can also grant access to all of its public variables while inheriting from mono-behaviour
+			* Create an Instance property with get() and set(), to set the instance to the script or get the instance if exists or not
+			* It ensures that you've got proper memory management of values and data that are really global values and that you dont end up with
+			  multiple copies of them in memory

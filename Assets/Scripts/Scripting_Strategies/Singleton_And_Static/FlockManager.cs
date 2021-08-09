@@ -27,6 +27,7 @@ public class FlockManager : MonoBehaviour {
 		{
 			Vector3 pos = this.transform.position + Random.insideUnitSphere * 10;
 			allBoids[i] = (GameObject) Instantiate(boidPrefab, pos, Quaternion.identity);
+			allBoids[i].GetComponentInChildren<Flock>().myManager = this;
 		}
 	}
 

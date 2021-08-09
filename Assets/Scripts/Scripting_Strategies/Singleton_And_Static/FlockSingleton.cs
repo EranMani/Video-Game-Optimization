@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class Flock : MonoBehaviour {
+public class FlockSingleton : MonoBehaviour {
 
-	public FlockManager myManager;
 	Vector3 pos;
 	public float speed;
 	Vector3 direction;
@@ -13,8 +12,8 @@ public class Flock : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		speed = Random.Range(myManager.minSpeed,
-								myManager.maxSpeed);
+		speed = Random.Range(FlockManagerSingleton.Instance.minSpeed,
+								FlockManagerSingleton.Instance.maxSpeed);
 		Color color = new Color(Random.Range(0.0f, 1.0f), Random.Range(0.0f, 1.0f), Random.Range(0.0f, 1.0f));
 		GetComponent<Renderer>().material.color = color;
 		direction = Vector3.forward;
@@ -26,16 +25,16 @@ public class Flock : MonoBehaviour {
 	{
 		pos = transform.position;
 		//if out of bounds
-		if (pos.x < -myManager.limits.x || pos.x > myManager.limits.x ||
-			pos.y < -myManager.limits.y || pos.y > myManager.limits.y ||
-			pos.z < -myManager.limits.z || pos.z > myManager.limits.z)
+		if (pos.x < -FlockManagerSingleton.Instance.limits.x || pos.x > FlockManagerSingleton.Instance.limits.x ||
+			pos.y < -FlockManagerSingleton.Instance.limits.y || pos.y > FlockManagerSingleton.Instance.limits.y ||
+			pos.z < -FlockManagerSingleton.Instance.limits.z || pos.z > FlockManagerSingleton.Instance.limits.z)
 		{
 			//turn back to the managers centre
 			direction = -transform.position;
 		}
 		else if (Random.Range(0, 1000) < 20)
 		{
-			speed = Random.Range(myManager.minSpeed, myManager.maxSpeed);
+			speed = Random.Range(FlockManagerSingleton.Instance.minSpeed, FlockManagerSingleton.Instance.maxSpeed);
 		}
 		else if (Random.Range(0, 1000) < 10) //go somewhere random
 		{
@@ -50,13 +49,13 @@ public class Flock : MonoBehaviour {
 		if (!direction.Equals(Vector3.zero))
 			transform.rotation = Quaternion.Slerp(transform.rotation,
 										  Quaternion.LookRotation(direction),
-										  myManager.rotationSpeed * Time.deltaTime);
+										  FlockManagerSingleton.Instance.rotationSpeed * Time.deltaTime);
 	}
 
 	void ApplyRules()
 	{
 		GameObject[] gos;
-		gos = myManager.allBoids;
+		gos = FlockManagerSingleton.Instance.allBoids;
 		
 		Vector3 vcentre = Vector3.zero;
 		Vector3 vavoid = Vector3.zero;
@@ -69,7 +68,7 @@ public class Flock : MonoBehaviour {
 			if(go != this.gameObject)
 			{
 				nDistance = Vector3.Distance(go.transform.position,this.transform.position);
-				if(nDistance <= myManager.neighbourDistance)
+				if(nDistance <= FlockManagerSingleton.Instance.neighbourDistance)
 				{
 					vcentre += go.transform.position;	
 					groupSize++;	
@@ -79,7 +78,7 @@ public class Flock : MonoBehaviour {
 						vavoid = vavoid + (this.transform.position - go.transform.position);
 					}
 					
-					Flock anotherFlock = go.GetComponentInChildren<Flock>();
+					FlockSingleton anotherFlock = FlockManagerSingleton.Instance.fs[go];
 					gSpeed = gSpeed + anotherFlock.speed;
 				}
 			}
