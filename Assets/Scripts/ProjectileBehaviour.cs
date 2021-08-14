@@ -20,6 +20,7 @@ public class ProjectileBehaviour : MonoBehaviour
 
 	void RemoveProjectile()
 	{
-		Destroy(gameObject);
+		BulletImpactPool.Take(transform.position, transform.rotation);
+		gameObject.SetActive(false);
 	}
 }

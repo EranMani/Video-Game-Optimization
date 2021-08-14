@@ -69,10 +69,11 @@ public class PlayerShooting : MonoBehaviour
 			{
 				tempRot.y = (rotation.y + 3 * y) % 360;
 
-				GameObject bullet = Instantiate(bulletPrefab) as GameObject;
+				// GameObject bullet = Instantiate(bulletPrefab) as GameObject;
+				BulletPool.Take(gunBarrel.position, Quaternion.Euler(tempRot));
 
-				bullet.transform.position = gunBarrel.position;
-				bullet.transform.rotation = Quaternion.Euler(tempRot);
+				// bullet.transform.position = gunBarrel.position;
+				// bullet.transform.rotation = Quaternion.Euler(tempRot);
 			}
 		}
 	}
