@@ -452,3 +452,15 @@
 	  update or frame then you might consider looking at lists because they obviously do it much faster
 	- Iterating over a Hashset is insanely fast. If you do have an awful lot of objects that you need to go over and over again throughout your game,
 	  you might want to consider using a hash set because it obviously going to save you an awful lot of time
+	  
+	  
+-------------------------------------------------- Object Pooling ------------------------------------------------
+* One application of using an array in a game
+* It is an old design pattern that was used first in the arcade games 
+* It helps manage memory a bit better, especially the garbage collection. It allows to control the memory as well as garbage collection
+* Creating and destroying game objects all of the time, especially frequently with many objects, is a bad idea
+* Object pooling is creating the objects right at the beginning of the game, and stick them into a pool where you could access them. Kind of like
+  a bit of an inventory. Every time you needed one of these objects, you pluck it out, use it, and then when you are finished with it, it goes back
+  into the pool. It never gets created or destroyed constantly throughout
+* The objects within the pool are set active to false, which means they are currently not being processed or being shown or anything. If you want to use
+  them, you have to turn them on (set active to true), and when finished you turn them off.
