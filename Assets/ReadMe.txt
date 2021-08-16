@@ -464,3 +464,86 @@
   into the pool. It never gets created or destroyed constantly throughout
 * The objects within the pool are set active to false, which means they are currently not being processed or being shown or anything. If you want to use
   them, you have to turn them on (set active to true), and when finished you turn them off.
+  
+  
+------------------------------------------------ Structs VS Classes ----------------------------------------------
+* In C# you have several types and mainly they are either VALUE or REFERENCE types. They behave quite differently.
+	- Value types (int, float, enum, bool, struct) - contain their data
+	- Reference types (class, object, array, string) - store references to their data
+	
+	- With reference types, you can have multiple variables holding references that points to the same exact object
+	- Reference types can be null, while value types cannot 
+	- With value types, each time you do an assignment you are making a copy of the underlying data
+	- With class type, we have our variables holding references to the original object, so modifying either of them modifies the underlying object
+	  that both of them reference
+	  
+	public class MyClass{
+		public int value;
+		
+		public MyClass(int value){
+			this.value = value;
+		}
+	}
+	
+	public struct MyStruct{
+		public int value;
+		
+		public MyStruct(int value){
+			this.value = value;
+		}
+	}
+	
+	MyClass first = new MyClass(7);
+	// The reference is passed to the second instance
+	MyClass second = first;
+	// Changing the value in one instance, will change the value of the original object
+	second.value = 5;
+	// first.value will be equal to 5. Although it was initialized with the value of 7, we passed the reference to another instance and changed
+	// the value their, but still this will affect the value of the original object that was created
+	
+	MyStruct firstStruct = new MyStruct(7);
+	// The value is copy, and not referenced to the new instance
+	MyStruct secondStruct = firstStruct;
+	secondStruct.value = 5;
+	// first.value will be equals to 7, since changing the value in the second instance will not affect the original value because it is copied and 
+	// not referenced
+	
+* Classes and structures kind of look the same in code, but they act differently in memory
+* Structures are VALUE types, which means that they store the data in line in their segments of their array on the heap
+	- Each segment on the heap is actually eight bytes plus eight bytes, plus eight bytes. Each property in the struct is going to be 8 bytes.
+	  For example, if the struct has 3 properties - then each call to the struct is going to take up 24 bytes
+	- An array of 100000 objects as structs, will give about 2,400,000 bytes which equals 2.4 mb
+	
+* For a class, it also stores all the data on the heap, but it is a reference type. It also creates an array of REFERENCE to each of hte pieces of data
+  on the heap, so you get a massive overhead of an extra eight bytes for every single piece of your array.
+	- In total, this gives you the 24 bytes from the actual class data, plus 8 bytes of overhead and that is 32 bytes.
+	- An array of 100000 objects of classes, will give about 3,200,000 bytes which equals 3.2 mb
+	
+* Compare performance when passing classes VS structs
+	- Struct: When you pass it, it will actually creates a copty of itself. So you end up with several copies of these things on the heap
+	- Class: When you pass it, it will only pass the reference to the class. So it is like 8 bytes is whatever the pointer to that class is
+	- Result: class types are more efficient to use when passing them from one method to the other
+	
+* Consider defining a struct instead of a class if instances of the type are small and commonly short-lived, or are commonly embedded in other objects
+	- A structure is really great for storing data, and it can store data values about your game objects quite easily, as well as being constructed and used
+	  in iterated over 
+	- Once it starts to get sort of copied around the place, you can end up with issues. So passing structures anywhere to other methods differently, is going
+	  to bog things down
+	- What is generally recommended for the size of a structure, before you should consider using a class, is between 30 and 40 mb.
+	- A structure works best when it has a single value or it has primitive types within it such as ints & doubles, which basically keeps it as a 
+	  primitive type
+	- Another great use of structures is if you want to use them in an array, when you want to write instead of a dictionary, and you want to
+	  define a key-value pair within the struct, but you don't want all the overhead of a dictionary
+	- Structures are immutable, which means they dont change over time. They are static in memory where they have been declared, where as a class 
+	  it not, you've got a reference and it can tend to change over time
+	- Try to avoid situations where it has to be copied so that there is another copy of it on the heap. You are going to get that when:
+		1) Actually assign it to some other data type
+		2) Casting it to some other data type, such as an object, where it is no referenced by a reference. There will be an extra copy of it on the heap
+		3) Passing it through a method, which is kind of almost the same thing - you are making another copy of it and referencing it, and in the end you got
+		   the data in two different locations
+* Avoid defining a struct unless the type has all of the following characteristics:
+	1) It logically represents a single value, similar to primitive types (int, double, etc...)
+	2) It has an instance size under 16 bytes
+	3) It is immutable
+	4) It will not have to be boxed frequently
+* In all other cases, you should define your types as classes
