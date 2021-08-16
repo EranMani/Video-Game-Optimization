@@ -547,3 +547,8 @@
 	3) It is immutable
 	4) It will not have to be boxed frequently
 * In all other cases, you should define your types as classes
+
+-------------------------------------- Disable Scripts Based On Visibility And Distance ----------------------------------------------
+* The idea is to disable scripts on objects that are not visible in the camera view/frustum
+* You can use OnBecameInvisible or OnBecameVisible to turn off and on the script when he is not in the camera view
+* You can also check the distance between the player and the objects in order to turn them off and on
