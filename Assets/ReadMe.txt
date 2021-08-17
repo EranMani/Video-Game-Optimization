@@ -552,3 +552,22 @@
 * The idea is to disable scripts on objects that are not visible in the camera view/frustum
 * You can use OnBecameInvisible or OnBecameVisible to turn off and on the script when he is not in the camera view
 * You can also check the distance between the player and the objects in order to turn them off and on
+
+
+
+***************************************************************************************************************************
+-------------------------------------------------------------------------------------------------------------------
+--------------------------------------------Rendering Optimization-------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------
+* Frame Debugger
+	- It can show the unity process going from a completely blank frame, to drawing all the things that are in that game environment. It also shows all the calls
+	  that are being made when drawing everything
+	- There may objects in the scene with the same material, but Unity will still call then separately from each other even though they are exactly the same shape
+	  using the exact same texture. This happens because of the material:
+		* The rendering process is considering each of those objects a separate item
+		* Because they are they are exactly the same rendering wise, we can tell Unity that they are the same and that they should be batched together
+		* Batch: when you put a lot of stuff together and push it through for being processed all at once, rather then doing one and then another and then another.
+		         This saves an awful lot of time
+		* ENABLE GPU INSTANCING: to make Unity that the objects are the same rendering wise, you can tick the box for enable gpu instancing which means that all the 
+		  object's materials can just be processed once, you dont have to do it all of the time
+		  
