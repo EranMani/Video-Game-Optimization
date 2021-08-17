@@ -571,3 +571,41 @@
 		* ENABLE GPU INSTANCING: to make Unity that the objects are the same rendering wise, you can tick the box for enable gpu instancing which means that all the 
 		  object's materials can just be processed once, you dont have to do it all of the time
 		  
+* The Rendering Pipeline
+	- A render pipeline basically takes the scene that you've created and draws it in the game view or as the final game
+	- The things that are putting a game together are:
+		1) Meshes
+		2) Textures
+		3) Shaders
+		4) Camera
+		5) Lights
+		6) Special Effects
+	- The basic processin a render pipeline is:
+		1) Culling - getting rid of anything in the scene that can not be seen within the camera's frustum
+		2) Rendering - going through the process of drawing what can be seen (shaders, textures, lights, shadows and more)
+		3) Post production effects
+		
+	- Unity offers different render pipelines:
+		1) Built-In render pipeline
+		2) Universal render pipeline (URP)
+		3) High definition render pipeline (HDRP)
+		4) Custom render pipeline (Scriptable render pipeline API)
+	
+	- The rendering process involves:
+		1) Taking all the primitive objects
+		2) Get vertex information, all of the world positions of your objects with respect to each other
+		3) Taking the textures and then maps those to the vertices 
+		4) Determines which objects are in front of other objects with depth testing
+		5) Producing some kind of rendered image
+		6) Post production (Unity post processing stack) - come at a cost. They are operated on a pixel by pixel basis, so they dont actually render using the 3D
+		   environment that you gave to the rendering process. They get applied over the top.
+		
+* Culling
+	- The camera frustum in perspective view is a phyrmid shape. The frustum size can be manipulated by adjusting the clipping planes of the camera.
+	  The near clipping plane is the top point of the shape, near the camera, and the far plane is the base of the shape which is far from the camera.
+	- The real optimization comes in where you have the far clipping plane set. By adjusting it, we can tell Unity how much of the environment from the camera
+	  point of view we want to process. If the value of the far clipping plane is big and there are objects in the environment that cant be seen by you, the camera still
+	  has to process them as being there.
+	- Fog: by using a fog, you can hide the fact that you have a very close or short far plane as we move the camera
+	- Occlusion: when objects are hidden behind other objects. If they are fully hidden behind objects, they dont need to be drawn
+		
